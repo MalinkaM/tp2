@@ -66,6 +66,7 @@ void menu() {
 }
 
 int main() {
+    setlocale(LC_ALL, "Russian");
     std::vector<SIGN> signs;
     int choice;
 
