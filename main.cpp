@@ -2,9 +2,7 @@
 using namespace std;
 
 #ifdef WIN32
-#define CLEAR "cls"
 #else
-#define CLEAR "clear"
 #endif
 #include "Container.h"
 
@@ -13,18 +11,18 @@ int main() {
     setlocale(LC_ALL, "Russian");
     Container cont;
 
-    system(CLEAR);
+    system("cls");
     int inp;
     do {
 cout << "1. Показать содержимое контейнера\n";
         cout << "2. Очистить контейнер\n";
-        cout << "3. Работа с элементом контейнера по индексу\n";
+        cout << "3. Работа с элементом контейнера по индексу\n";    
         cout << "4. Добавить новый элемент\n";
         cout << "5. Поиск по знаку зодиака\n";
         cout << "6. Выход\n";
 
         cin >> inp;
-        system(CLEAR);
+        system("cls");
 
         switch (inp) {
         case 1:
@@ -62,7 +60,7 @@ cout << "1. Показать содержимое контейнера\n";
                     string buf;
                     int arr[3];
                     cin >> inpda;
-                    system(CLEAR);
+                    system("cls");
 
                     switch (inpda) {
                     case 1:
