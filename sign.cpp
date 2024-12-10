@@ -1,74 +1,90 @@
-#include "sign.h"
+#include "SIGN.h"
 
-// Конструкторы
+const std::string& SIGN::getName() const {
+    return name;
+}
+
+void SIGN::setName(const std::string& name) {
+    SIGN::name = name;
+}
+
+const std::string& SIGN::getSurname() const {
+    return surname;
+}
+
+void SIGN::setSurname(const std::string& surname) {
+    SIGN::surname = surname;
+}
+
+const std::string& SIGN::getZodiac() const {
+    return zodiac;
+}
+
+void SIGN::setZodiac(const std::string& zodiac) {
+    SIGN::zodiac = zodiac;
+}
+
+const int* SIGN::getBirthday() const {
+    return birthday;
+}
+
+void SIGN::setBirthday(const int* birth) {
+    if (birth != nullptr) for (int i = 0; i < 3; i++) birthday[i] = birth[i];
+}
+
+
+SIGN::SIGN(const std::string& n) {
+    name = n;
+    surname = "";
+    zodiac = "";
+    int arr[3] = { 1, 1, 1970 };
+    setBirthday(arr);
+
+    std::cout << "Создан объект SIGN с использованием упрощенного конструктора:\n";
+    this->operator<<(std::cout);
+}
+
 SIGN::SIGN() {
-    std::cout << "Вызван конструктор без параметров.\n";
-    surname = name = zodiacSign = "";
-    birthday[0] = birthday[1] = birthday[2] = 0;
+    name = "неопределенный пользователь";
+    surname = "";
+    zodiac = "";
+    int arr[3] = { 1, 1, 1970 };
+    setBirthday(arr);
+
+    std::cout << "Создан объект SIGN с использованием пустого конструктора:\n";
+    this->operator<<(std::cout);
 }
 
-SIGN::SIGN(const std::string& surname, const std::string& name, const std::string& zodiacSign, int day, int month, int year) {
-    std::cout << "Вызван конструктор с параметрами.\n";
-    this->surname = surname;
-    this->name = name;
-    this->zodiacSign = zodiacSign;
-    this->birthday[0] = day;
-    this->birthday[1] = month;
-    this->birthday[2] = year;
+SIGN::SIGN(const SIGN& another) {
+    name = another.getName();
+    surname = another.getSurname();
+    zodiac = another.getZodiac();
+    setBirthday(another.getBirthday());
+
+    std::cout << "Создан объект SIGN с использованием конструктора копирования:\n";
+    this->operator<<(std::cout);
 }
 
-SIGN::SIGN(const SIGN& other) {
-    std::cout << "Вызван конструктор копирования.\n";
-    surname = other.surname;
-    name = other.name;
-    zodiacSign = other.zodiacSign;
-    birthday[0] = other.birthday[0];
-    birthday[1] = other.birthday[1];
-    birthday[2] = other.birthday[2];
+SIGN::SIGN(const std::string& name, const std::string& surname, const std::string& zodiac, int* birth) {
+    SIGN::name = name;
+    SIGN::surname = surname;
+    SIGN::zodiac = zodiac;
+    setBirthday(birth);
+
+    std::cout << "Создан объект SIGN с использованием полного конструктора:\n";
+    this->operator<<(std::cout);
 }
 
-// Деструктор
-SIGN::~SIGN() {
-    std::cout << "Вызван деструктор.\n";
-}
-
-// Методы доступа
-void SIGN::setSurname(const std::string& surname) { this->surname = surname; }
-void SIGN::setName(const std::string& name) { this->name = name; }
-void SIGN::setZodiacSign(const std::string& zodiacSign) { this->zodiacSign = zodiacSign; }
-void SIGN::setBirthday(int day, int month, int year) {
-    if (day <= 0 || day > 31 || month <= 0 || month > 12 || year < 0)
-        throw std::invalid_argument("Некорректная дата!");
-    birthday[0] = day; birthday[1] = month; birthday[2] = year;
-}
-
-std::string SIGN::getSurname() const { return surname; }
-std::string SIGN::getName() const { return name; }
-std::string SIGN::getZodiacSign() const { return zodiacSign; }
-void SIGN::getBirthday(int& day, int& month, int& year) const {
-    day = birthday[0]; month = birthday[1]; year = birthday[2];
-}
-
-// Перегрузка операторов
-std::ostream& operator<<(std::ostream& os, const SIGN& sign) {
-    os << "ФИО: " << sign.surname << " " << sign.name << ", Знак зодиака: " << sign.zodiacSign
-        << ", День рождения: " << sign.birthday[0] << "." << sign.birthday[1] << "." << sign.birthday[2];
+std::ostream& SIGN::operator<<(std::ostream& os) {
+    os << "Имя:        " << name << "\n";
+    os << "Фамилия:    " << surname << "\n";
+    os << "Знак зодиака: " << zodiac << "\n";
+    os << "Дата рождения: " << birthday[0] << "." << birthday[1] << "." << birthday[2] << "\n";
     return os;
 }
 
-std::istream& operator>>(std::istream& is, SIGN& sign) {
-    std::cout << "Введите фамилию: ";
-    is >> sign.surname;
-    std::cout << "Введите имя: ";
-    is >> sign.name;
-    std::cout << "Введите знак зодиака: ";
-    is >> sign.zodiacSign;
-    std::cout << "Введите дату рождения (день, месяц, год): ";
-    is >> sign.birthday[0] >> sign.birthday[1] >> sign.birthday[2];
-    return is;
+SIGN::~SIGN() {
+    std::cout << "Удален объект SIGN с использованием деструктора:\n";
+    this->operator<<(std::cout);
 }
 
-// Сравнение по знаку зодиака
-bool SIGN::operator<(const SIGN& other) const {
-    return zodiacSign < other.zodiacSign;
-}

@@ -1,88 +1,148 @@
-#include "sign.h"
-#include <vector>
-#include <fstream>
-#include <algorithm>
+#include "SIGN.h"
+using namespace std;
 
-void addSign(std::vector<SIGN>& signs) {
-    SIGN newSign;
-    std::cin >> newSign;
-    signs.push_back(newSign);
-    std::sort(signs.begin(), signs.end());
-}
+#ifdef WIN32
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
+#include "Container.h"
 
-void printByMonth(const std::vector<SIGN>& signs) {
-    int month;
-    std::cout << "Введите месяц для поиска (1-12): ";
-    std::cin >> month;
-
-    bool found = false;
-    for (const auto& sign : signs) {
-        int day, m, year;
-        sign.getBirthday(day, m, year);
-        if (m == month) {
-            std::cout << sign << "\n";
-            found = true;
-        }
-    }
-
-    if (!found) {
-        std::cout << "Нет людей, родившихся в этом месяце.\n";
-    }
-}
-
-void editSign(std::vector<SIGN>& signs) {
-    int index;
-    std::cout << "Введите номер записи для редактирования (1-" << signs.size() << "): ";
-    std::cin >> index;
-
-    if (index < 1 || index > signs.size()) {
-        std::cout << "Некорректный номер.\n";
-        return;
-    }
-
-    std::cin >> signs[index - 1];
-    std::sort(signs.begin(), signs.end());
-}
-
-void deleteSign(std::vector<SIGN>& signs) {
-    int index;
-    std::cout << "Введите номер записи для удаления (1-" << signs.size() << "): ";
-    std::cin >> index;
-
-    if (index < 1 || index > signs.size()) {
-        std::cout << "Некорректный номер.\n";
-        return;
-    }
-
-    signs.erase(signs.begin() + index - 1);
-}
-
-void menu() {
-    std::cout << "1. Добавить запись\n";
-    std::cout << "2. Удалить запись\n";
-    std::cout << "3. Редактировать запись\n";
-    std::cout << "4. Вывести записи по месяцу\n";
-    std::cout << "5. Выход\n";
-}
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    std::vector<SIGN> signs;
-    int choice;
+    Container cont;
 
+    system(CLEAR);
+    int inp;
     do {
-        menu();
-        std::cin >> choice;
+cout << "1. Показать содержимое контейнера\n";
+        cout << "2. Очистить контейнер\n";
+        cout << "3. Работа с элементом контейнера по индексу\n";
+        cout << "4. Добавить новый элемент\n";
+        cout << "5. Поиск по знаку зодиака\n";
+        cout << "6. Выход\n";
 
-        switch (choice) {
-        case 1: addSign(signs); break;
-        case 2: deleteSign(signs); break;
-        case 3: editSign(signs); break;
-        case 4: printByMonth(signs); break;
-        case 5: std::cout << "Выход.\n"; break;
-        default: std::cout << "Некорректный выбор.\n";
+        cin >> inp;
+        system(CLEAR);
+
+        switch (inp) {
+        case 1:
+            cout << "Количество элементов в контейнере:  " << cont.length() << "\n";
+            cont.operator<<(cout);
+            break;
+        case 2:
+            cont.clear();
+            cout << "Контейнер был очищен.\n";
+            break;
+        case 3:
+            cout << "Введите индекс элемента: ";
+            {
+                int inpd;
+                int inpda;
+                SIGN* element;
+                cin >> inpd;
+                try {
+                    element = cont[inpd];
+                }
+                catch (const out_of_range exc) {
+                    cout << "Неверный индекс!\n";
+                    break;
+                };
+                do {
+                    element->operator<<(cout);
+                    cout << "1. Изменить имя\n";
+                    cout << "2. Изменить фамилию\n";
+                    cout << "3. Изменить знак зодиака\n";
+                    cout << "4. Изменить дату рождения\n";
+                    cout << "5. Удалить\n";
+                    cout << "6. Назад\n";
+
+
+                    string buf;
+                    int arr[3];
+                    cin >> inpda;
+                    system(CLEAR);
+
+                    switch (inpda) {
+                    case 1:
+                        cout << "Введите новую информацию: ";
+                        cin >> buf;
+                        element->setName(buf);
+                        break;
+                    case 2:
+                        cout << "Введите новую информацию: ";
+                        cin >> buf;
+                        element->setSurname(buf);
+                        break;
+                    case 3:
+                        cout << "Введите новую информацию: ";
+                        cin >> buf;
+                        element->setZodiac(buf);
+                        break;
+                    case 4:
+                        cout << "Введите новую информацию в формате День Месяц Год без разделителей: \n";
+                        cin >> arr[0] >> arr[1] >> arr[2];
+                        element->setBirthday(arr);
+                        break;
+                    case 5:
+                        cont.remove(inpd);
+                        cout << "Элемент удален.\n";
+                        inpda = 6;
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        cout << "Введите существующую команду!\n";
+                        break;
+                    };
+                } while (inpda != 6);
+            }
+            break;
+        case 4: {
+            SIGN* newElement = new SIGN();
+            int inpd;
+            string buf1, buf2, buf3;
+            int arr[3];
+            cout << "Введите имя: ";
+            cin >> buf1;
+            cout << "Введите фамилию: ";
+            cin >> buf2;
+            cout << "Введите знак зодиака: ";
+            cin >> buf3;
+            cout << "Введите дату рождения в формате День Месяц Год без разделителей: ";
+            cin >> arr[0] >> arr[1] >> arr[2];
+            newElement->setName(buf1);
+            newElement->setSurname(buf2);
+            newElement->setZodiac(buf3);
+            newElement->setBirthday(arr);
+            cont.add(newElement);
+            cout << "Элемент добавлен.\n";
         }
-    } while (choice != 5);
+              break;
+        case 5:
+        {
+            cout << "Введите знак зодиака: ";
+            string buf;
+            cin >> buf;
+            int counter = 0;
+            for (int i = 0; i < cont.length(); i++) {
+                if (buf == cont[i]->getZodiac()) {
+                    counter++;
+                    cont[i]->operator<<(cout);
+                }
+            }
+            if (counter == 0) cout << "Нет людей с таким знаком зодиака!\n";
+        }
+        break;
+
+        case 6:
+            break;
+        default:
+            cout << "Введите существующую команду!\n";
+            break;
+        }
+    } while (inp != 6);
 
     return 0;
 }

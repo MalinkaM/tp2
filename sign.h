@@ -1,42 +1,40 @@
-#ifndef SIGN_H
-#define SIGN_H
-
-#include <iostream>
+#ifndef CPP2_5DSEM_SIGN_H
+#define CPP2_5DSEM_SIGN_H
 #include <string>
+#include <iostream>
 
 class SIGN {
 private:
-    std::string surname;
-    std::string name;
-    std::string zodiacSign;
-    int birthday[3]; // [day, month, year]
-
+    std::string name, surname;
+    std::string zodiac;
+    int birthday[3];
 public:
-    // Конструкторы
-    SIGN();
-    SIGN(const std::string& surname, const std::string& name, const std::string& zodiacSign, int day, int month, int year);
-    SIGN(const SIGN& other);
+    explicit SIGN(const std::string& name, const std::string& surname, const std::string& zodiac, int[3]);
+    explicit SIGN(const std::string& n);
+    explicit SIGN();
+    SIGN(const SIGN& another);
+    virtual ~SIGN();
 
-    // Деструктор
-    ~SIGN();
 
-    // Методы доступа
-    void setSurname(const std::string& surname);
+    const std::string& getName() const;
+
     void setName(const std::string& name);
-    void setZodiacSign(const std::string& zodiacSign);
-    void setBirthday(int day, int month, int year);
 
-    std::string getSurname() const;
-    std::string getName() const;
-    std::string getZodiacSign() const;
-    void getBirthday(int& day, int& month, int& year) const;
+    const std::string& getSurname() const;
 
-    // Перегрузка операторов
-    friend std::ostream& operator<<(std::ostream& os, const SIGN& sign);
-    friend std::istream& operator>>(std::istream& is, SIGN& sign);
+    void setSurname(const std::string& surname);
 
-    // Сравнение по знаку зодиака (для сортировки)
-    bool operator<(const SIGN& other) const;
+    const std::string& getZodiac() const;
+
+    void setZodiac(const std::string& zodiac);
+
+    const int* getBirthday() const;
+
+    void setBirthday(const int*);
+
+
+    std::ostream& operator<<(std::ostream& os);
 };
 
-#endif // SIGN_H
+
+#endif 

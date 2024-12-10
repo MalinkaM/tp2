@@ -127,9 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Container.h" />
     <ClInclude Include="sign.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sign.cpp" />
   </ItemGroup>
