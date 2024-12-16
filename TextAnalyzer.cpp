@@ -17,7 +17,6 @@ int countWordOccurrences(const string& sentence, const string& word) {
         }
         pos += wordLength;
     }
-
     return count;
 }
 

@@ -15,7 +15,6 @@ public:
     SIGN(const SIGN& another);
     virtual ~SIGN();
 
-
     const std::string& getName() const;
 
     void setName(const std::string& name);

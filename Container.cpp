@@ -1,41 +1,45 @@
 #include "Container.h"
 
-Container::Container(unsigned number)
-{
+Container::Container(unsigned number) {
     if (number == 0) throw std::invalid_argument("Получен 0 аргумент!");
     arr = new SIGN * [number];
     size = 0;
     real_size = number;
+    std::cout << "Вызван конструктор с параметром Container\n";
 }
 
-Container::Container()
-{
+Container::Container() {
     arr = new SIGN * [10];
     size = 0;
     real_size = 10;
+    std::cout << "Вызван конструктор по умолчанию Container\n";
 }
 
-Container::Container(const Container& another)
-{
-    unsigned i;
-    for (i = 0; i < size; i++) delete arr[i];
+Container::Container(const Container& another) {
+    std::cout << "Вызван конструктор копирования Container\n";
 
     arr = new SIGN * [another.real_size];
     size = another.size;
     real_size = another.real_size;
 
-    for (i = 0; i < size; i++) arr[i] = another.arr[i];
+    for (unsigned i = 0; i < size; i++) {
+        arr[i] = new SIGN(*another.arr[i]); 
+    }
     sort();
 }
 
-Container::~Container()
-{
-    if (!isEmpty()) for (unsigned i = 0; i < size; i++) delete arr[i];
+Container::~Container() {
+    std::cout << "Вызван деструктор Container\n";
+
+    if (!isEmpty()) {
+        for (unsigned i = 0; i < size; i++) {
+            delete arr[i];
+        }
+    }
     if (real_size != 0) delete[] arr;
 }
 
-void Container::add(SIGN* a)
-{
+void Container::add(SIGN* a) {
     if (size < real_size) {
         arr[size] = a;
         size++;
@@ -87,14 +91,12 @@ void Container::clear() {
     arr = new SIGN * [10];
 }
 
-SIGN* Container::operator[](unsigned index)
-{
+SIGN* Container::operator[](unsigned index) {
     if (index >= size) throw std::out_of_range("Индекс за пределами диапазона!");
     else return arr[index];
 }
 
-std::ostream& Container::operator<<(std::ostream& os)
-{
+std::ostream& Container::operator<<(std::ostream& os) {
     sort();
     os << size << "\n";
     if (isEmpty()) os << "Контейнер пуст!\n";
@@ -113,7 +115,6 @@ void Container::sort() {
         }
     }
 }
-
 
 void Container::swap(unsigned int a, unsigned int b) {
     SIGN* buf = arr[b];
