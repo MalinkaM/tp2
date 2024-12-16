@@ -50,10 +50,8 @@ SIGN::SIGN() {
     zodiac = "";
     int arr[3] = { 1, 1, 1970 };
     setBirthday(arr);
-
-    std::cout << "Создан объект SIGN с использованием пустого конструктора:\n";
-    this->operator<<(std::cout);
 }
+
 
 SIGN::SIGN(const SIGN& another) {
     name = another.getName();

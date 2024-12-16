@@ -105,13 +105,15 @@ std::ostream& Container::operator<<(std::ostream& os)
 void Container::sort() {
     for (int i = 0; i < size - 1; i++) {
         for (int j = i + 1; j < size; j++) {
-            const int* bt1 = arr[i]->getBirthday();
-            const int* bt2 = arr[j]->getBirthday();
-            int superbt1 = bt1[2] * 365 + bt1[1] * 30 + bt1[0], superbt2 = bt2[2] * 365 + bt2[1] * 30 + bt2[0];
-            if (superbt1 > superbt2) swap(i, j);
+            const std::string& zodiac1 = arr[i]->getZodiac();
+            const std::string& zodiac2 = arr[j]->getZodiac();
+            if (zodiac1 > zodiac2) {
+                swap(i, j);
+            }
         }
     }
 }
+
 
 void Container::swap(unsigned int a, unsigned int b) {
     SIGN* buf = arr[b];
